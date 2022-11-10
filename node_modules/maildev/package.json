@@ -1,0 +1,105 @@
+{
+  "name": "maildev",
+  "description": "SMTP Server and Web Interface for reading and testing emails during development",
+  "version": "2.0.5",
+  "keywords": [
+    "email",
+    "e-mail",
+    "mail",
+    "maildev",
+    "mailcatcher",
+    "testing",
+    "development",
+    "smtp"
+  ],
+  "author": "Dan Farrelly",
+  "homepage": "http://maildev.github.io/maildev/",
+  "maintainers": [
+    {
+      "name": "Dan Farrelly",
+      "email": "daniel.j.farrelly@gmail.com"
+    },
+    {
+      "name": "Dominik Serafin",
+      "email": "DominikSerafin@users.noreply.github.com"
+    },
+    {
+      "name": "LoneRifle",
+      "email": "LoneRifle@users.noreply.github.com"
+    },
+    {
+      "name": "soulteary",
+      "email": "soulteary@gmail.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/maildev/maildev.git"
+  },
+  "scripts": {
+    "start": "node ./bin/maildev",
+    "test": "standard && nyc _mocha --exit --timeout 5000",
+    "lint": "standard",
+    "lint:fix": "standard --fix",
+    "dev": "node ./scripts/dev.js && npm run css-watch",
+    "css": "node-sass --output-style compressed -o app/styles assets/styles/style.scss",
+    "css-watch": "node-sass -wr --output-style compressed -o app/styles assets/styles/style.scss",
+    "docker-build": "./scripts/dockerBuild.sh",
+    "docker-run": "docker run --rm -p 1080:1080 -p 1025:1025 maildev/maildev:$npm_package_version",
+    "docker-push": "./scripts/dockerPush.sh",
+    "update-readme": "node ./scripts/updateUsageREADME.js"
+  },
+  "main": "./index.js",
+  "bin": {
+    "maildev": "./bin/maildev"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "addressparser": "1.0.1",
+    "async": "^3.2.3",
+    "commander": "^9.0.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dompurify": "^2.3.6",
+    "express": "^4.17.3",
+    "iconv-lite": "0.5.0",
+    "jsdom": "^19.0.0",
+    "mime": "2.4.4",
+    "nodemailer": "^6.7.2",
+    "rimraf": "^3.0.2",
+    "smtp-server": "3.11.0",
+    "socket.io": "4.4.1",
+    "uue": "3.1.2"
+  },
+  "devDependencies": {
+    "expect": "^27.5.1",
+    "got": "^9.6.0",
+    "http-proxy-middleware": "2.0.4",
+    "jest": "^27.5.1",
+    "jest-mock": "^27.5.1",
+    "mocha": "^9.2.2",
+    "node-sass": "^7.0.0",
+    "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
+    "standard": "^16.0.4"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "standard": {
+    "ignore": [
+      "app/components/"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "test/**/*"
+    ],
+    "ignore-class-method": "methodToIgnore",
+    "reporter": [
+      "json",
+      "lcov",
+      "text-summary"
+    ]
+  }
+}
