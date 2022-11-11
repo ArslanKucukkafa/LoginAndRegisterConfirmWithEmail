@@ -12,9 +12,11 @@ import java.util.Optional;
 @Repository
 @Transactional(readOnly = true)
 public interface AppUserRepository extends JpaRepository<AppUser,Long> {
-    Optional<AppUser>findByEmail(String email);
+    Optional<AppUser> findByEmail(String email);
 
-    AppUser findByEmailRtU(String email);
+    Optional<AppUser>findByEmailAndPassword(String email ,String password);
+
+
     @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +

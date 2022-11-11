@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
-// 01.05.1964 7 KASIM 166 ÖGRETEN
 @Service
 @AllArgsConstructor
 public class AuthService implements UserDetailsService {
@@ -34,15 +34,15 @@ public class AuthService implements UserDetailsService {
     }
 
 
-    public ResponseEntity authenticateUser(@RequestBody LoginRequest loginRequest){
-        AppUser appuser = appUserRepository.findByEmailRtU(loginRequest.getEmail());
-        if(appuser==null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        else{
-            return ResponseEntity.ok(appuser);
-        }
+    public ResponseEntity SignIn(@RequestBody LoginRequest loginRequest){
+        boolean isconfirmed = appUserRepository.findByEmailAndPassword(loginRequest.getEmail(),loginRequest.getPassword()).isPresent();
+        String encodedPassword = bCryptPasswordEncoder.encode(loginRequest.getPassword());
+        if(isconfirmed){
+            return ResponseEntity.ok("validate password an email");
+        }else {return (ResponseEntity) ResponseEntity.badRequest();}
+
     }
+
 
     public String signUpUser(AppUser appUser){
       boolean userExist = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
