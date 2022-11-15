@@ -35,21 +35,22 @@ public class AuthService implements UserDetailsService {
 
 
     public ResponseEntity SignIn(@RequestBody LoginRequest loginRequest){
-        boolean isconfirmed = appUserRepository.findByEmailAndPassword(loginRequest.getEmail(),loginRequest.getPassword()).isPresent();
+        Optional<AppUser> isconfirmed = appUserRepository.findByEmail(loginRequest.getEmail());
         String encodedPassword = bCryptPasswordEncoder.encode(loginRequest.getPassword());
-        if(isconfirmed){
-            return ResponseEntity.ok("validate password an email");
-        }else {return (ResponseEntity) ResponseEntity.badRequest();}
-
+        if(isconfirmed.isPresent()){
+            return ResponseEntity.ok("validate password an email  "+isconfirmed);
+        }else {
+            boolean x= false;
+            return ResponseEntity.ok("Yanlış "+isconfirmed);}
     }
 
 
     public String signUpUser(AppUser appUser){
-      boolean userExist = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
+        String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
+        boolean userExist = appUserRepository.findByEmailAndPassword(appUser.getEmail(),encodedPassword).isPresent();
       if(userExist){
           throw new IllegalStateException("email already taken");
       }
-      String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
 
       appUser.setPassword(encodedPassword);
 

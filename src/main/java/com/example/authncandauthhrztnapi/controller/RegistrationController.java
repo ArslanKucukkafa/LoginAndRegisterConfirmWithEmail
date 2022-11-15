@@ -24,14 +24,17 @@ public class RegistrationController {
     }
 
     @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
+    public String confirm(@RequestParam("token") String token)
+    {
+try{
+    return registrationService.confirmToken(token);
+
+}
+catch (Exception ex){return ex.toString();}
     }
 
     @PostMapping(path = "login")
     public ResponseEntity login(@RequestBody LoginRequest request){
-       return authService.SignIn(request);
-
+        return authService.SignIn(request);
     }
-
 }
